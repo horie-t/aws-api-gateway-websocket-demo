@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>WebSocket Demo</title>
+    </head>
+<body>
+    <script>
+        var socket = new WebSocket('wss://13fnrvazw2.execute-api.us-east-1.amazonaws.com/dev');
+
+        socket.onopen = function(event) {
+            console.log("connected!");
+        }
+
+        socket.onmessage = function(event) {
+            console.log("message recieved: " + event.data);
+            var dataElem = document.getElementById("data");
+            dataElem.innerHTML = dataElem.innerHTML + event.data + "</br>";
+        }
+
+    </script>
+    <p>受信データ</p>
+    <div id="data"></div>
+</body>

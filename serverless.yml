@@ -47,6 +47,14 @@ provider:
   websocketsApiName: aws-api-gateway-websocket-demo-${self:provider.stage}
   websocketsApiRouteSelectionExpression: $request.body.action
 
+plugins:
+  - serverless-finch
+
+custom:
+  client:
+    bucketName: aws-api-gateway-websocket-demo.tehorie.com
+    distributionFolder: client
+
 # you can add packaging information here
 #package:
 #  patterns:
