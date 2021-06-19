@@ -4,20 +4,36 @@
     <title>WebSocket Demo</title>
     </head>
 <body>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
-        var socket = new WebSocket('wss://13fnrvazw2.execute-api.us-east-1.amazonaws.com/dev');
+        $(function () {
+            var socket = new WebSocket('wss://13fnrvazw2.execute-api.us-east-1.amazonaws.com/dev');
 
-        socket.onopen = function(event) {
-            console.log("connected!");
-        }
+            socket.onopen = function(event) {
+                console.log("connected!");
+            }
 
-        socket.onmessage = function(event) {
-            console.log("message recieved: " + event.data);
-            var dataElem = document.getElementById("data");
-            dataElem.innerHTML = dataElem.innerHTML + event.data + "</br>";
-        }
+            socket.onmessage = function(event) {
+                console.log("message recieved: " + event.data);
+                $('#recievedData').append($('<li>').text(event.data));
+                var dataElem = document.getElementById("data");
+                window.scrollTo(0, document.body.scrollHeight);                
+            }
 
+            $('form').submit(function(){
+                var msg = {
+                    action: "broadcast",
+                    data: $('#sendData').val()
+                };
+                socket.send(JSON.stringify(msg));
+                $('#sendData').val('');
+                return false;
+            });
+        });
     </script>
     <p>受信データ</p>
-    <div id="data"></div>
+    <ul id="recievedData"></ul>
+    <form action="">
+        <input id="sendData" /><button>送信</button>
+    </form>
 </body>
