@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>WebSocket NotificationDemo</title>
+</head>
+<body>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.7/push.min.js"></script>
+    <script>
+        function setCompleteNotification() {
+            Push.Permission.request(onGranted, onDenied);
+        }
+
+        function onGranted() {
+            console.log('granted.');
+            var socket = new WebSocket('wss://13fnrvazw2.execute-api.us-east-1.amazonaws.com/dev');
+
+            socket.onopen = function(event) {
+                console.log("connected!");
+            }
+
+            socket.onmessage = function(event) {
+                console.log("message recieved: " + event.data);
+
+                if (event.data == "complete") {
+                   Push.create("処理完了", {
+                        body:    "処理を完了しました。",
+                        timeout: 3000,
+                        onClick: function () {
+                            this.close();
+                        }
+                    });
+                }
+            }
+        }
+
+        function onDenied() {
+            console.log('denied.');
+        }
+
+        window.onload = setCompleteNotification();
+    </script>
+    <p>Notificationによる通知</p>
+</body>
+</html>
