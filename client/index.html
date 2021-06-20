@@ -16,8 +16,6 @@
             socket.onmessage = function(event) {
                 console.log("message recieved: " + event.data);
                 $('#recievedData').append($('<li>').text(event.data));
-                var dataElem = document.getElementById("data");
-                window.scrollTo(0, document.body.scrollHeight);                
             }
 
             $('form').submit(function(){
