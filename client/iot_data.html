@@ -8,31 +8,85 @@
     <!-- prepare a DOM container with width and height -->
     <div id="main" style="width: 600px;height:400px;"></div>
     <script type="text/javascript">
-        // based on prepared DOM, initialize echarts instance
-        var myChart = echarts.init(document.getElementById('main'));
 
-        // specify chart configuration item and data
-        var option = {
+
+
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        function randomData() {
+            now = new Date(+now + oneDay);
+            value = value + Math.random() * 21 - 10;
+            return {
+                name: now.toString(),
+                value: [
+                    [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/') + ' ' + [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
+                    Math.round(value)
+                ]
+            };
+        }
+
+        var data = [];
+        var now = +new Date();
+        var oneDay = 1000;
+        var value = Math.random() * 1000;
+        for (var i = 0; i < 100; i++) {
+            data.push(randomData());
+        }
+
+        option = {
             title: {
-                text: 'ECharts entry example'
+                text: 'IoTデータ表示'
             },
-            tooltip: {},
-            legend: {
-                data:['Sales']
+            tooltip: {
+                trigger: 'axis',
+                formatter: function (params) {
+                    params = params[0];
+                    var date = new Date(params.name);
+                    return date.getHours()+ ':' + date.getMinutes() + ':' + date.getSeconds() + ' ; ' + params.value[1];
+                },
+                axisPointer: {
+                    animation: false
+                }
             },
             xAxis: {
-                data: ["shirt","cardign","chiffon shirt","pants","heels","socks"]
+                type: 'time',
+                formatter: '{HH}:{mm}',
+                splitLine: {
+                    show: false
+                }
             },
-            yAxis: {},
+            yAxis: {
+                type: 'value',
+                boundaryGap: [0, '100%'],
+                splitLine: {
+                    show: false
+                }
+            },
             series: [{
-                name: 'Sales',
-                type: 'bar',
-                data: [5, 20, 36, 10, 10, 20]
+                name: '疑似データ',
+                type: 'line',
+                showSymbol: false,
+                hoverAnimation: false,
+                data: data
             }]
         };
 
-        // use configuration item and data specified to show chart
-        myChart.setOption(option);
+        setInterval(function () {
+
+            for (var i = 0; i < 5; i++) {
+                data.shift();
+                data.push(randomData());
+            }
+
+            myChart.setOption({
+                series: [{
+                    data: data
+                }]
+            });
+        }, 1000);
+        option && myChart.setOption(option);
     </script>
 </body>
 </html>
