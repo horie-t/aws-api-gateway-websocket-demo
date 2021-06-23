@@ -8,31 +8,39 @@
     <!-- prepare a DOM container with width and height -->
     <div id="main" style="width: 600px;height:400px;"></div>
     <script type="text/javascript">
-
-
-
         var chartDom = document.getElementById('main');
         var myChart = echarts.init(chartDom);
         var option;
 
         function randomData() {
-            now = new Date(+now + oneDay);
+            now = new Date(+now + oneSec);
             value = value + Math.random() * 21 - 10;
             return {
                 name: now.toString(),
                 value: [
-                    [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/') + ' ' + [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
+                    [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/') +
+                     ' ' + [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
                     Math.round(value)
                 ]
             };
         }
 
         var data = [];
-        var now = +new Date();
-        var oneDay = 1000;
-        var value = Math.random() * 1000;
+        var now = new Date();
+        now = +now - 100 * 1000
+        var oneSec = 1000;
+        var value = 0;
         for (var i = 0; i < 100; i++) {
-            data.push(randomData());
+            now = new Date(+now);
+            data.push({
+                name: now.toString(),
+                value: [
+                    [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/') +
+                     ' ' + [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
+                    value
+                ]
+            });
+            now = +now + oneSec;
         }
 
         option = {
