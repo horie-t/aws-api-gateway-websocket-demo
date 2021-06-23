@@ -56,7 +56,8 @@ Serverless: Success! Your site should be available at http://xxxxx.example.com.s
 ```
 
 デプロイしたindex.htmlファイルなどは、`http://xxxxx.example.com.s3-website-us-east-1.amazonaws.com/index.html`などでアクセスできます。
-ただし、complete_notification.htmlはHTTPSプロトコルでアクセスしないと動作しないので、CloudFormationなどを使ってHTTPSアクセスできるようにしてください。
+
+**ただし**、complete_notification.htmlはHTTPSプロトコルでアクセスしないと動作しないので、CloudFormationなどを使ってHTTPSアクセスできるようにしてください。
 
 ### APIの呼び出し
 
@@ -82,3 +83,32 @@ Connected (press CTRL+C to quit)
 ブラウザで`http://xxxxx.example.com.s3-website-us-east-1.amazonaws.com/index.html`(URLのホスト名はデプロイの結果の値にします)にアクセスします。
 
 ![ChatDemo](./ChatDemo.png)
+
+### ファイルの処理の進捗表示
+
+ブラウザで`http://xxxxx.example.com.s3-website-us-east-1.amazonaws.com/file_process.html`(URLのホスト名はデプロイの結果の値にします)にアクセスします。
+
+アクセス直後は進捗が0%ですが、以下のようにwscatを使って進捗率を送信すると、進捗率が変化します。
+
+```bash
+$ wscat -c wss://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/dev
+Connected (press CTRL+C to quit)
+> {"action": "broadcast", "data": "75"}
+< 75
+```
+
+![FileProcessDemo](./FileProcessDemo.png)
+
+### プッシュ通知
+
+ブラウザで`https://xxxxx.example.co.jp/complete_notification.html`(URLのホスト名は、CloudFormationでのHTTPSアクセス用の値にします)にアクセスします。
+
+
+以下のようにwscatを使って完了を送信すると、プッシュ通知のポップアップが表示されます。
+
+```bash
+$ wscat -c wss://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/dev
+Connected (press CTRL+C to quit)
+> {"action": "broadcast", "data": "complete"}
+< complete
+```
