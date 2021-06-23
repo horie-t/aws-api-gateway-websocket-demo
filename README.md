@@ -112,3 +112,5 @@ Connected (press CTRL+C to quit)
 > {"action": "broadcast", "data": "complete"}
 < complete
 ```
+
+![CompleteNotificationDemo](./CompleteNotificationDemo.png)
