@@ -16,6 +16,8 @@ serverless.ymlファイルの以下の`xxxxx.example.com`をユニークな名�
     bucketName: xxxxx.example.com
 ```
 
+### デプロイ
+
 API Gateway、Lambda関数をデプロイします。
 
 ```bash
@@ -56,3 +58,27 @@ Serverless: Success! Your site should be available at http://xxxxx.example.com.s
 デプロイしたindex.htmlファイルなどは、`http://xxxxx.example.com.s3-website-us-east-1.amazonaws.com/index.html`などでアクセスできます。
 ただし、complete_notification.htmlはHTTPSプロトコルでアクセスしないと動作しないので、CloudFormationなどを使ってHTTPSアクセスできるようにしてください。
 
+### APIの呼び出し
+
+[wscat](https://github.com/websockets/wscat)を使ってテストしてみます。
+
+wscatをインストールします。
+
+```bash
+npm install -g wscat
+```
+
+以下のコマンドを実行して、公開APIエンドポイントに接続します。(xxxxxxxxxxの部分はデプロイの結果の値にします)
+
+```bash
+$ wscat -c wss://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/dev
+Connected (press CTRL+C to quit)
+> {"action": "broadcast", "data": "Hello, world!"}
+< Hello, world!
+```
+
+### チャット・アプリケーション
+
+ブラウザで`http://xxxxx.example.com.s3-website-us-east-1.amazonaws.com/index.html`(URLのホスト名はデプロイの結果の値にします)にアクセスします。
+
+![ChatDemo](./ChatDemo.png)
