@@ -52,7 +52,7 @@ plugins:
 
 custom:
   client:
-    bucketName: aws-api-gateway-websocket-demo.tehorie.com
+    bucketName: xxxxx.example.com
     distributionFolder: client
 
 # you can add packaging information here
