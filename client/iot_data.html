@@ -12,19 +12,6 @@
         var myChart = echarts.init(chartDom);
         var option;
 
-        function randomData() {
-            now = new Date(+now + oneSec);
-            value = value + Math.random() * 21 - 10;
-            return {
-                name: now.toString(),
-                value: [
-                    [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/') +
-                     ' ' + [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
-                    Math.round(value)
-                ]
-            };
-        }
-
         var data = [];
         var now = new Date();
         now = +now - 100 * 1000
@@ -81,19 +68,33 @@
             }]
         };
 
-        setInterval(function () {
+        var socket = new WebSocket('wss://13fnrvazw2.execute-api.us-east-1.amazonaws.com/dev');
 
-            for (var i = 0; i < 5; i++) {
-                data.shift();
-                data.push(randomData());
-            }
+        socket.onopen = function(event) {
+            console.log("connected!");
+        }
+
+        socket.onmessage = function(event) {
+            console.log("message recieved: " + event.data);
+            data.shift;
+            
+            var now = new Date();
+            data.push({
+                name: now.toString(),
+                value: [
+                    [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/') +
+                    ' ' + [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
+                    event.data
+                ]
+            });
 
             myChart.setOption({
                 series: [{
                     data: data
                 }]
             });
-        }, 1000);
+        }
+
         option && myChart.setOption(option);
     </script>
 </body>
