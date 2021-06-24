@@ -1,0 +1,91 @@
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>WebSocket IoT Demo</title>
+    <!-- including ECharts file -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js" integrity="sha256-TI0rIaxop+pDlHNVI6kDCFvmpxNYUnVH/SMjknZ/W0Y=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        var data = [];
+        var now = new Date();
+        now = +now - 100 * 1000
+        var oneSec = 1000;
+        var value = 0;
+        for (var i = 0; i < 100; i++) {
+            now = new Date(+now);
+            data.push({
+                name: now.toString(),
+                value: [
+                    [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/') +
+                     ' ' + [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
+                    value
+                ]
+            });
+            now = +now + oneSec;
+        }
+
+        option = {
+            title: {
+                text: 'IoTデータ表示'
+            },
+            tooltip: {
+                trigger: 'axis',
+                formatter: function (params) {
+                    params = params[0];
+                    var date = new Date(params.name);
+                    return date.getHours()+ ':' + date.getMinutes() + ':' + date.getSeconds() + ' ; ' + params.value[1];
+                },
+                axisPointer: {
+                    animation: false
+                }
+            },
+            xAxis: {
+                type: 'time',
+                formatter: '{HH}:{mm}',
+                splitLine: {
+                    show: false
+                }
+            },
+            yAxis: {
+                type: 'value',
+                boundaryGap: [0, '100%'],
+                splitLine: {
+                    show: false
+                }
+            },
+            series: [{
+                name: '疑似データ',
+                type: 'line',
+                showSymbol: false,
+                hoverAnimation: false,
+                data: data
+            }]
+        };
+
+        var socket = new WebSocket('wss://13fnrvazw2.execute-api.us-east-1.amazonaws.com/dev');
+
+        socket.onopen = function(event) {
+            console.log("connected!");
+        }
+
+        socket.onmessage = function(event) {
+            console.log("message recieved: " + event.data);
+            data.shift;
+            data.push(JSON.parse(event.data));
+            myChart.setOption({
+                series: [{
+                    data: data
+                }]
+            });
+        }
+
+        option && myChart.setOption(option);
+    </script>
+</body>
+</html>

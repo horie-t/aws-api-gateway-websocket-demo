@@ -114,3 +114,19 @@ Connected (press CTRL+C to quit)
 ```
 
 ![CompleteNotificationDemo](./CompleteNotificationDemo.png)
+
+### IoTデータ表示
+
+ブラウザで`http://xxxxx.example.com.s3-website-us-east-1.amazonaws.com/file_process.html`(URLのホスト名はデプロイの結果の値にします)にアクセスします。
+
+以下のようにwscatを使って時刻とデータを送信すると、時系列のグラフが更新されます。
+
+```bash
+$ wscat -c wss://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/dev
+Connected (press CTRL+C to quit)
+> {"action": "broadcast", "data": "{\"name\": \"2021/06/24 21:09:10\", \"value\": [\"2021/06/24 21:09:10\", \"12\"]}"}
+< {"name": "2021/06/24 21:09:10", "value": ["2021/06/24 21:09:10", "12"]}
+```
+
+![IoTDataDemo](./IoTDataDemo.png)
+
