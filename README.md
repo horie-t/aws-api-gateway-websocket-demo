@@ -127,3 +127,6 @@ Connected (press CTRL+C to quit)
 > {"action": "broadcast", "data": "{\"name\": \"2021/06/24 21:09:10\", \"value\": [\"2021/06/24 21:09:10\", \"12\"]}"}
 < {"name": "2021/06/24 21:09:10", "value": ["2021/06/24 21:09:10", "12"]}
 ```
+
+![IoTDataDemo](./IoTDataDemo.png)
+
