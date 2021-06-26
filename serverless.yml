@@ -79,7 +79,15 @@ functions:
     events:
       - websocket:
           route: broadcast
-
+  broadcast_post:
+    handler: server/http_handler.broadcast_post
+    environment:
+      WS_DOMAIN: 13fnrvazw2.execute-api.us-east-1.amazonaws.com
+    events:
+       - http:
+           path: broadcast
+           method: post
+           cors: true
 #    Define function environment variables here
 #    environment:
 #      variable2: value2
