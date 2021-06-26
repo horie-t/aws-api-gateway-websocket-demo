@@ -82,7 +82,7 @@ functions:
   broadcast_post:
     handler: server/http_handler.broadcast_post
     environment:
-      WS_DOMAIN: 13fnrvazw2.execute-api.us-east-1.amazonaws.com
+      WS_DOMAIN: xxxxxxxxxx.execute-api.us-east-1.amazonaws.com
     events:
        - http:
            path: broadcast
