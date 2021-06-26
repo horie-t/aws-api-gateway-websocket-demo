@@ -10,6 +10,12 @@ AWS API GatewayでWebSocketを使うデモです
 
 ## 使用方法
 
+Serverless Finch プラグインをインストールします。
+
+```bash
+npm install --save serverless-finch
+```
+
 serverless.ymlファイルの以下の`xxxxx.example.com`をユニークな名前に書き換えます。
 
 ```yaml
@@ -114,6 +120,24 @@ Connected (press CTRL+C to quit)
 ```
 
 ![CompleteNotificationDemo](./CompleteNotificationDemo.png)
+
+### HTTP POSTでのデータ送信
+
+WebSocketでデータを送信するのではなくHTTPでPOSTして送信したい場合は、serverless.ymlファイルの以下の`xxxxxxxxxx`部分を、WebSocketのドメイン名に合わせて変更し、再デプロイします。
+
+```yaml
+  broadcast_post:
+    handler: server/http_handler.broadcast_post
+    environment:
+      WS_DOMAIN: xxxxxxxxxx.execute-api.us-east-1.amazonaws.com
+```
+
+以下のようにcurlでデータをpostすると、他のクライアントでデータを受信できます。
+
+```bash
+$ curl -H "Accept: application/json" -H "Content-type: application/json" -X POST -d 'Hello, world!' https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/dev/broadcast 
+Data sent.
+```
 
 ### IoTデータ表示
 
