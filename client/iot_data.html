@@ -77,7 +77,17 @@
         socket.onmessage = function(event) {
             console.log("message recieved: " + event.data);
             data.shift;
-            data.push(JSON.parse(event.data));
+
+            var now = new Date();
+            data.push({
+                name: now.toString(),
+                value: [
+                    [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/') +
+                    ' ' + [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
+                    event.data
+                ]
+            });
+
             myChart.setOption({
                 series: [{
                     data: data
