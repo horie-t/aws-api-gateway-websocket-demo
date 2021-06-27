@@ -160,7 +160,7 @@ Connected (press CTRL+C to quit)
 
 [Seeed社のWio Terminalのネットワーク設定のページ](https://wiki.seeedstudio.com/Wio-Terminal-Network-Overview/)でWio Terminalのファームウェアをアップデートし、ライブラリをインストールします。
 
-arduino/wio_terminal_light.inoファイルを開き、WiFiのSSIDとパスワードと、POST先のドメイン名を設定します。
+arduino/wio_terminal_light/setting.hファイルを開き、WiFiのSSIDとパスワードと、POST先のドメイン名を設定します。
 
 ```c++
 const char* ssid = "your ssid";
