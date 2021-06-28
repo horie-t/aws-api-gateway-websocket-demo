@@ -39,8 +39,8 @@ void setup() {
 
   tft.setTextColor(TFT_WHITE);
   tft.setTextSize(2);
-  tft.drawString("Light value:", 10, 10);
-  tft.drawRoundRect(5, 30, 320 - (5 + 5), 240 - (30 + 5), 10, TFT_WHITE);
+  tft.drawString("Light value:", 70, 115);
+  tft.drawRoundRect(15, 75, 320 - (15 * 2), 240 - (75 * 2), 15, TFT_WHITE);
 }
  
 void loop() {
@@ -48,8 +48,8 @@ void loop() {
   String lightValue = String(analogRead(WIO_LIGHT));
 
   // 光センサの値をLDCに表示
-  tft.fillRect(160, 10, 100, 18, TFT_DARKCYAN);
-  tft.drawString(lightValue, 160, 10);
+  tft.fillRect(220, 115, 50, 18, TFT_DARKCYAN);
+  tft.drawString(lightValue, 220, 115);
 
   if(&client) {
     /*
