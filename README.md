@@ -141,7 +141,7 @@ Data sent.
 
 ### IoTデータ表示
 
-ブラウザで`http://xxxxx.example.com.s3-website-us-east-1.amazonaws.com/file_process.html`(URLのホスト名はデプロイの結果の値にします)にアクセスします。
+ブラウザで`http://xxxxx.example.com.s3-website-us-east-1.amazonaws.com/iot_data.html`(URLのホスト名はデプロイの結果の値にします)にアクセスします。
 
 以下のようにwscatを使ってデータを送信すると、時系列のグラフが更新されます。
 
@@ -203,3 +203,26 @@ const char* rootCa = \
                       "VsyuLAOQ1xk4meTKCRlb/weWsKh/NEnfVqn3sF/tM+2MR7cwA130A4w=\n"                      
                       "-----END CERTIFICATE-----\n";
 ```
+
+### Wio TerminalにSCD30を接続して、CO2濃度、室温、湿度を測定する
+
+#### 前提条件
+
+[Seeed社のGrove 湿度、温度とCO2センサー(SCD30)のページ](https://wiki.seeedstudio.com/jp/Grove-CO2_Temperature_Humidity_Sensor-SCD30/)を参照し、ライブラリをインストールします。
+
+arduino/room_condition/setting.hファイルを開き、WiFiのSSIDとパスワードと、POST先のドメイン名を設定します。
+
+```c++
+const char* ssid = "your ssid";
+const char* password =  "your ssid password";
+const char* postUrl =  "https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/dev/broadcast";
+```
+
+証明書が合わずエラーになる場合は、「Wio Terminalの光センサーのデータを送信」と同様に証明書の値を書き換えます。
+
+![RoomCondtion](./RoomCondition.jpg)
+
+
+ブラウザで`http://xxxxx.example.com.s3-website-us-east-1.amazonaws.com/room_condition.html`(URLのホスト名はデプロイの結果の値にします)にアクセスします。
+
+![RoomCondtionChart](./RoomConditionChart.png)

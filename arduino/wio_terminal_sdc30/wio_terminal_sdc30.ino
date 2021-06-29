@@ -50,7 +50,8 @@ void setup() {
 void loop() {
   float result[3] = {0};
 
-  if (scd30.isAvailable()) {
+  bool scd30available = scd30.isAvailable();
+  if (scd30available) {
     // SDC30の値を読み込み、LCDの表示
     scd30.getCarbonDioxideConcentration(result);
     tft.fillRect(160, 90, 140, 80, TFT_DARKCYAN);
@@ -59,7 +60,7 @@ void loop() {
     tft.drawString(String(result[2], 1) + " %",     160, 140);
   }
 
-  if(&client) {
+  if(&client && scd30available) {
     /*
      * サーバへ値を送信
      */

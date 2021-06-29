@@ -1,0 +1,293 @@
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>Room Condition</title>
+    <!-- including ECharts file -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js" integrity="sha256-TI0rIaxop+pDlHNVI6kDCFvmpxNYUnVH/SMjknZ/W0Y=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <p><div id="co2"      style="width: 800px; height: 280px;"></div></p>
+    <p><div id="temp"     style="width: 800px; height: 280px;"></div></p>
+    <p><div id="humidity" style="width: 800px; height: 280px;"></div></p>
+    <script type="text/javascript">
+        /*
+         * CO2濃度
+         */
+        var co2ChartDom = document.getElementById('co2');
+        var co2Chart = echarts.init(co2ChartDom);
+        var co2Data = getInitialData();
+        var co2Option;
+        co2Option = {
+            title: {
+                text: 'CO2濃度'
+            },
+            tooltip: {
+                trigger: 'axis',
+                formatter: function (params) {
+                    params = params[0];
+                    var date = new Date(params.name);
+                    return date.getHours()+ ':' + date.getMinutes() + ':' + date.getSeconds() + ' ; ' + params.value[1];
+                },
+                axisPointer: {
+                    animation: false
+                }
+            },
+            xAxis: {
+                type: 'time',
+                formatter: '{HH}:{mm}',
+                splitLine: {
+                    show: false
+                }
+            },
+            yAxis: {
+                type : 'value',
+                axisLabel : {
+                    formatter: '{value} ppm'
+                },
+                name: 'CO2濃度',
+                nameLocation: 'middle',
+                nameGap: 100                
+            },
+            series: [{
+                name: 'CO2濃度データ',
+                type: 'line',
+                showSymbol: false,
+                hoverAnimation: false,
+                data: co2Data
+            }]
+        };
+        co2Option && co2Chart.setOption(co2Option);
+
+        /*
+         * 室温
+         */
+        var tempChartDom = document.getElementById('temp');
+        var tempChart = echarts.init(tempChartDom);
+        var tempData = getInitialData();
+        var tempOption;
+        tempOption = {
+            title: {
+                text: '室温'
+            },
+            tooltip: {
+                trigger: 'axis',
+                formatter: function (params) {
+                    params = params[0];
+                    var date = new Date(params.name);
+                    return date.getHours()+ ':' + date.getMinutes() + ':' + date.getSeconds() + ' ; ' + params.value[1];
+                },
+                axisPointer: {
+                    animation: false
+                }
+            },
+            xAxis: {
+                type: 'time',
+                formatter: '{HH}:{mm}',
+                splitLine: {
+                    show: false
+                }
+            },
+            yAxis: {
+                type : 'value',
+                axisLabel : {
+                    formatter: '{value} °C'
+                },
+                name: '温度',
+                nameLocation: 'middle',
+                nameGap: 50                
+            },
+            series: [{
+                name: '温度データ',
+                type: 'line',
+                showSymbol: false,
+                hoverAnimation: false,
+                data: tempData
+            }]
+        };
+        tempOption && tempChart.setOption(tempOption);
+
+        /*
+         * 室温
+         */
+         var tempChartDom = document.getElementById('temp');
+        var tempChart = echarts.init(tempChartDom);
+        var tempData = getInitialData();
+        var tempOption;
+        tempOption = {
+            title: {
+                text: '室温'
+            },
+            tooltip: {
+                trigger: 'axis',
+                formatter: function (params) {
+                    params = params[0];
+                    var date = new Date(params.name);
+                    return date.getHours()+ ':' + date.getMinutes() + ':' + date.getSeconds() + ' ; ' + params.value[1];
+                },
+                axisPointer: {
+                    animation: false
+                }
+            },
+            xAxis: {
+                type: 'time',
+                formatter: '{HH}:{mm}',
+                splitLine: {
+                    show: false
+                }
+            },
+            yAxis: {
+                type : 'value',
+                axisLabel : {
+                    formatter: '{value} °C'
+                },
+                name: '温度',
+                nameLocation: 'middle',
+                nameGap: 50                
+            },
+            series: [{
+                name: '温度データ',
+                type: 'line',
+                showSymbol: false,
+                hoverAnimation: false,
+                data: tempData
+            }]
+        };
+        tempOption && tempChart.setOption(tempOption);
+
+        /*
+         * 湿度
+         */
+         var humidityChartDom = document.getElementById('humidity');
+        var humidityChart = echarts.init(humidityChartDom);
+        var humidityData = getInitialData();
+        var humidityOption;
+        humidityOption = {
+            title: {
+                text: '湿度'
+            },
+            tooltip: {
+                trigger: 'axis',
+                formatter: function (params) {
+                    params = params[0];
+                    var date = new Date(params.name);
+                    return date.getHours()+ ':' + date.getMinutes() + ':' + date.getSeconds() + ' ; ' + params.value[1];
+                },
+                axisPointer: {
+                    animation: false
+                }
+            },
+            xAxis: {
+                type: 'time',
+                formatter: '{HH}:{mm}',
+                splitLine: {
+                    show: false
+                }
+            },
+            yAxis: {
+                type : 'value',
+                axisLabel : {
+                    formatter: '{value} %'
+                },
+                name: '湿度',
+                nameLocation: 'middle',
+                nameGap: 50                
+            },
+            series: [{
+                name: '湿度データ',
+                type: 'line',
+                showSymbol: false,
+                hoverAnimation: false,
+                data: humidityData
+            }]
+        };
+        humidityOption && humidityChart.setOption(humidityOption);
+
+        /*
+         * WebSocketによるデータの受信
+         */
+        var socket = new WebSocket('wss://13fnrvazw2.execute-api.us-east-1.amazonaws.com/dev');
+
+        socket.onopen = function(event) {
+            console.log("connected!");
+        }
+
+        socket.onmessage = function(event) {
+            console.log("message recieved: " + event.data);
+            var measureResult = JSON.parse(event.data);
+
+            var now = new Date();
+            // CO2データの更新
+            co2Data.shift();
+            co2Data.push({
+                name: now.toString(),
+                value: [
+                    [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/') +
+                    ' ' + [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
+                    measureResult['co2']
+                ]
+            });
+
+            co2Chart.setOption({
+                series: [{
+                    data: co2Data
+                }]
+            });
+
+            // 温度データの更新
+            tempData.shift();
+            tempData.push({
+                name: now.toString(),
+                value: [
+                    [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/') +
+                    ' ' + [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
+                    measureResult['temperature']
+                ]
+            });
+
+            tempChart.setOption({
+                series: [{
+                    data: tempData
+                }]
+            });
+
+            // 湿度データの更新
+            humidityData.shift();
+            humidityData.push({
+                name: now.toString(),
+                value: [
+                    [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/') +
+                    ' ' + [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
+                    measureResult['humidity']
+                ]
+            });
+
+            humidityChart.setOption({
+                series: [{
+                    data: humidityData
+                }]
+            });
+        }
+
+        function getInitialData() {
+            var data = []
+            var now = new Date();
+            now = +now - 100 * 1000
+            var oneSec = 1000;
+            var value = 0;
+            for (var i = 0; i < 100; i++) {
+                now = new Date(+now);
+                data.push({
+                    name: now.toString(),
+                    value: [
+                        [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/') +
+                        ' ' + [now.getHours(), now.getMinutes(), now.getSeconds()].join(':'),
+                        value
+                    ]
+                });
+                now = +now + oneSec;
+            }
+            return data
+        }
+    </script>
+</body>
+</html>
