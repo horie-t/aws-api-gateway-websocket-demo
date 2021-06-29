@@ -76,7 +76,7 @@
 
         socket.onmessage = function(event) {
             console.log("message recieved: " + event.data);
-            data.shift;
+            data.shift();
 
             var now = new Date();
             data.push({

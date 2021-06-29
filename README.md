@@ -141,7 +141,7 @@ Data sent.
 
 ### IoTデータ表示
 
-ブラウザで`http://xxxxx.example.com.s3-website-us-east-1.amazonaws.com/file_process.html`(URLのホスト名はデプロイの結果の値にします)にアクセスします。
+ブラウザで`http://xxxxx.example.com.s3-website-us-east-1.amazonaws.com/iot_data.html`(URLのホスト名はデプロイの結果の値にします)にアクセスします。
 
 以下のようにwscatを使ってデータを送信すると、時系列のグラフが更新されます。
 
